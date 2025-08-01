@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
@@ -7,8 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HotjarService } from '../../services/hotjar.service';
-import 'primeng/inputtext/style.css';
-import 'primeng/button/style.css';
+import { PrimeNG } from 'primeng/config'
 
 interface NavigationItem {
   label: string;
@@ -19,13 +18,11 @@ interface NavigationItem {
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule,
-    
     FormsModule,
     RouterModule,
     InputTextModule,
     ButtonModule
-  ],
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

@@ -12,14 +12,15 @@
     <!-- Navegación -->
     <nav class="navigation">
       <ul class="nav-list">
-        <li 
-          *ngFor="let item of getNavigationItems()" 
-          class="nav-item"
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          (click)="onNavigationClick(item)">
-          {{ item.label }}
-        </li>
+        @for (item of getNavigationItems(); track item) {
+          <li
+            class="nav-item"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            (click)="onNavigationClick(item)">
+            {{ item.label }}
+          </li>
+        }
       </ul>
     </nav>
   </div>
@@ -28,31 +29,31 @@
   <div class="subscription-section">
     <div class="subscription-content">
       <p class="subscription-text">{{ subscriptionText }}</p>
-      
+
       <form class="subscription-form" (ngSubmit)="onSubmitSubscription()">
         <div class="input-group">
-          <input 
-            type="email" 
-            pInputText 
+          <input
+            type="email"
+            pInputText
             class="email-input"
             [placeholder]="subscriptionPlaceholder"
             [(ngModel)]="emailSubscription"
             name="emailSubscription"
             (keypress)="onInputKeyPress($event)"
             required>
-          
-          <button 
-            type="submit" 
-            pButton 
-            class="submit-button"
-            [icon]="submitButtonIcon"
-            [disabled]="!emailSubscription.trim()">
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <!-- Línea divisoria -->
-  <div class="divider-line"></div>
-</header> 
+            <button
+              type="submit"
+              pButton
+              class="submit-button"
+              [icon]="submitButtonIcon"
+              [disabled]="!emailSubscription.trim()">
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Línea divisoria -->
+    <div class="divider-line"></div>
+  </header>
