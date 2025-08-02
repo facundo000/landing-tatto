@@ -10,16 +10,30 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'SamuraiBlast';
+  src: url('./assets/fonts/SamuraiBlast.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HIROMISAKE';
+  src: url('./assets/fonts/HIROMISAKE.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html, body {
   height: 100%;
-  font-family: 'Arial', sans-serif;
+  font-family: 'SamuraiBlast', 'HIROMISAKE', sans-serif;
   background-color: #000000;
   color: #ffffff;
 }
 
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'SamuraiBlast','HIROMISAKE';  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
