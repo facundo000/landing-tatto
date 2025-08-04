@@ -267,21 +267,7 @@
   }
 }
 
-/* Animaciones adicionales - estos estilos se aplican inicialmente y luego GSAP los anima */
-.header-container {
-  /* opacity: 0; - removido para evitar problemas de visibilidad */
-  /* transform: translateY(-20px); - removido para evitar problemas de visibilidad */
-}
 
-.nav-item {
-  /* opacity: 0; - removido para evitar problemas de visibilidad */
-  /* transform: translateY(-10px); - removido para evitar problemas de visibilidad */
-}
-
-.subscription-form {
-  /* opacity: 0; - removido para evitar problemas de visibilidad */
-  /* transform: scale(0.9); - removido para evitar problemas de visibilidad */
-}
 
 /* Estados de hover mejorados */
 .nav-item:hover {
