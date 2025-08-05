@@ -1,0 +1,399 @@
+.contact-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #fff;
+  font-family: 'SamuraiBlast','HIROMISAKE', sans-serif;
+}
+
+/* Header Styles */
+.contact-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.contact-header h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  margin: 0;
+  color: #fff;
+}
+
+.dragon-divider {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.dragon-svg {
+  width: 350px;
+  height: 50px;
+  color: #dc2626;
+}
+
+/* Contact Content Layout */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Map Section */
+.map-section {
+  width: 100%;
+}
+
+.map-container {
+  width: 100%;
+  height: 400px;
+  background: #2d3748;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.map-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2);
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  position: relative;
+}
+
+.location-pin {
+  color: #dc2626;
+  animation: pulse 2s infinite;
+}
+
+.subscription-form {
+  width: 100%;
+  max-width: 400px;
+  font-family: 'HIROMISAKE','SamuraiBlast', sans-serif;
+}
+
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.email-input {
+  flex: 1;
+  background-color: transparent;
+  border: 1px solid var(--primary-red) !important;
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  /* font-family: 'Arial', sans-serif; */
+  transition: all 0.3s ease;
+}
+
+.email-input::placeholder {
+  color: var(--white);
+  opacity: 0.7;
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: var(--dark-red);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+.submit-button {
+  background-color: var(--dark-red) !important;
+  border: none !important;
+  color: var(--white) !important;
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 1rem !important;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: var(--primary-red) !important;
+  transform: scale(1.05);
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Info Section */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: 'HIROMISAKE', sans-serif;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-item h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.info-item p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clickable:hover {
+  color: #dc2626;
+}
+
+/* Email Subscription */
+.subscription-form {
+  margin-top: 0.5rem;
+}
+
+.email-input-container {
+  display: flex;
+  max-width: 400px;
+}
+
+.email-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.email-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: #dc2626;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.subscribe-btn {
+  padding: 0.75rem 1rem;
+  background: #dc2626;
+  border: 2px solid #dc2626;
+  border-radius: 0 4px 4px 0;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subscribe-btn:hover:not(:disabled) {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  transform: translateX(2px);
+}
+
+.subscribe-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.subscription-message {
+  margin-top: 0.5rem;
+}
+
+.subscription-message p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.subscription-message .success {
+  color: #10b981;
+}
+
+.subscription-message .error {
+  color: #ef4444;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.social-btn {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+}
+
+.instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #dc2626;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.instagram-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 1rem;
+  }
+  
+  .contact-header h1 {
+    font-size: 2rem;
+  }
+  
+  .dragon-svg {
+    width: 280px;
+  }
+  
+  .info-section {
+    gap: 1.5rem;
+  }
+  
+  .info-item h3 {
+    font-size: 1.1rem;
+  }
+  
+  .map-container {
+    height: 250px;
+  }
+
+  .dragon-line {
+    height: 15%;
+    width: 25%;
+  }
+}
+
+@media (max-width: 480px) {
+  .email-input-container {
+    max-width: 100%;
+  }
+  
+  .social-links {
+    flex-wrap: wrap;    
+  }
+
+  
+  .social-btn {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* Focus and Accessibility */
+.email-input:focus,
+.subscribe-btn:focus,
+.social-btn:focus {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-item {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.info-item:nth-child(1) { animation-delay: 0.1s; }
+.info-item:nth-child(2) { animation-delay: 0.2s; }
+.info-item:nth-child(3) { animation-delay: 0.3s; }
+.info-item:nth-child(4) { animation-delay: 0.4s; }

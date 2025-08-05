@@ -1,65 +1,49 @@
-<div class="faq-container">
-  <!-- Header -->
-  <div class="faq-header">
-    <h1>FAQs</h1>
-    <div class="dragon-divider">
-      <svg viewBox="0 0 400 50" class="dragon-svg">
-        <path d="M50 25 Q100 10 150 25 T250 25 T350 25" 
-              stroke="currentColor" 
-              stroke-width="3" 
-              fill="none"/>
-        <circle cx="50" cy="25" r="4" fill="currentColor"/>
-        <circle cx="150" cy="25" r="4" fill="currentColor"/>
-        <circle cx="250" cy="25" r="4" fill="currentColor"/>
-        <circle cx="350" cy="25" r="4" fill="currentColor"/>
-        <!-- Dragon heads -->
-        <path d="M45 20 L50 25 L45 30 M50 22 L55 25 L50 28" 
-              stroke="currentColor" 
-              stroke-width="2" 
-              fill="none"/>
-        <path d="M345 20 L350 25 L345 30 M350 22 L355 25 L350 28" 
-              stroke="currentColor" 
-              stroke-width="2" 
-              fill="none"/>
-      </svg>
+<section class="faq-section">
+  <div class="faq-container">
+    <!-- Header -->
+    <div class="faq-header">
+      <h1>FAQs</h1>
+      <div class="dragon-decoration">
+        <img src="assets/images/dragon_decoration.svg" alt="Decoración dragon" class="dragon-line" width="250" height="200">
+      </div>
     </div>
-  </div>
 
-  <!-- FAQ Items -->
-  <div class="faq-list">
-    <div 
-      *ngFor="let faq of faqs;" 
-      class="faq-item"
-      [class.open]="faq.isOpen">
-      
-      <button 
-        class="faq-question"
-        (click)="toggleFaq(faq.id)"
-        [attr.aria-expanded]="faq.isOpen"
-        [attr.aria-controls]="'faq-answer-' + faq.id">
-        
-        <span class="question-number">{{ faq.id }}</span>
-        <span class="question-text">{{ faq.question }}</span>
-        
-        <span class="toggle-icon" [class.rotated]="faq.isOpen">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M19 9L12 16L5 9" 
-                  stroke="currentColor" 
-                  stroke-width="2" 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </button>
-
+    <!-- FAQ Items -->
+    <div class="faq-list">
       <div 
-        class="faq-answer"
-        [id]="'faq-answer-' + faq.id"
-        [attr.aria-hidden]="!faq.isOpen">
-        <div class="answer-content">
-          <p>{{ faq.answer }}</p>
+        *ngFor="let faq of faqs;" 
+        class="faq-item"
+        [class.open]="faq.isOpen">
+        
+        <button 
+          class="faq-question"
+          (click)="toggleFaq(faq.id)"
+          [attr.aria-expanded]="faq.isOpen"
+          [attr.aria-controls]="'faq-answer-' + faq.id">
+          
+          <span class="question-number">{{ faq.id }}</span>
+          <span class="question-text">{{ faq.question }}</span>
+          
+          <span class="toggle-icon" [class.rotated]="faq.isOpen">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M19 9L12 16L5 9" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+
+        <div 
+          class="faq-answer"
+          [id]="'faq-answer-' + faq.id"
+          [attr.aria-hidden]="!faq.isOpen">
+          <div class="answer-content">
+            <p>{{ faq.answer }}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
