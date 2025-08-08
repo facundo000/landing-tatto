@@ -1,6 +1,8 @@
-.faq-section{
+/* Optimizaciones de performance */
+.faq-section {
   background: #cc0000;
   background: linear-gradient(180deg, rgba(204, 0, 0, 1) 0%, rgba(184, 0, 0, 1) 5%, rgba(111, 0, 0, 1) 24%, rgba(59, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
+  contain: layout style paint;
 }
 
 .faq-container {
@@ -8,12 +10,14 @@
   max-width: 900px;
   margin: 0 auto;
   color: #fff;
+  contain: layout style;
 }
 
 /* Header Styles */
 .faq-header {
   text-align: center;
   margin-bottom: 3rem;
+  contain: layout style;
 }
 
 .faq-header h1 {
@@ -23,29 +27,33 @@
   margin: 0;
   color: #fff;
   font-family: 'SamuraiBlast', 'HIROMISAKE', sans-serif;
+  contain: layout style;
 }
 
 .dragon-divider {
   margin: 2rem 0;
   display: flex;
   justify-content: center;
+  contain: layout style;
 }
-
 
 /* FAQ List Styles */
 .faq-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  contain: layout style;
 }
 
 .faq-item {
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   background: rgba(0, 0, 0, 0.3);
   font-family: 'HIROMISAKE', sans-serif;
+  will-change: border-color, box-shadow;
+  contain: layout style;
 }
 
 .faq-item:hover {
@@ -71,10 +79,12 @@
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.15s ease;
   text-align: left;
   font-family: 'HIROMISAKE', sans-serif;
-
+  will-change: background-color;
+  contain: layout style;
+  transform: translateZ(0);
 }
 
 .faq-question:hover {
@@ -96,13 +106,16 @@
   color: #fff;
   border-radius: 4px;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.5rem;
   flex-shrink: 0;
+  contain: layout style;
 }
 
 .question-text {
   flex: 1;
-  line-height: 1.4;  
+  line-height: 1.4;
+  font-size: 1.5rem;
+  contain: layout style;
 }
 
 .toggle-icon {
@@ -112,36 +125,53 @@
   width: 2rem;
   height: 2rem;
   color: #ffffff;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
+  will-change: transform;
+  contain: layout style;
+  transform: translateZ(0);
 }
 
 .toggle-icon.rotated {
-  transform: rotate(180deg);
+  transform: rotate(180deg) translateZ(0);
 }
 
-/* Answer Styles */
+/* Answer Styles - Optimizado para mejor performance */
 .faq-answer {
-  max-height: 0;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: grid-template-rows;
+  contain: layout style;
+  display: grid;
   overflow: hidden;
-  transition: max-height 0.4s ease-in-out;
-  padding-top: 2rem;
 }
 
 .faq-item.open .faq-answer {
-  max-height: 500px;
+  grid-template-rows: 1fr;
 }
 
 .answer-content {
   padding: 0 2rem 2rem 2rem;
   margin-left: 3rem; /* Align with question text */
+  contain: layout style;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  will-change: opacity, transform;
+  min-height: 0;
+}
+
+.faq-item.open .answer-content {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .answer-content p {
   margin: 0;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
-  font-size: 1rem;
+  font-size: 1.2rem;
+  contain: layout style;
 }
 
 /* Responsive Design */
@@ -206,25 +236,40 @@
   outline-offset: 2px;
 }
 
-/* Animation for smooth opening/closing */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.faq-item.open .answer-content {
-  animation: fadeIn 0.3s ease-in-out;
-}
+/* Optimización: Eliminamos la animación fadeIn que puede causar conflictos */
 
 @media (max-width: 768px) {
   .dragon-line {
     height: 15%;
     width: 25%;
   }
+}
+
+/* Optimizaciones adicionales para performance */
+.dragon-decoration {
+  contain: layout style;
+}
+
+.dragon-line {
+  contain: layout style;
+  will-change: auto;
+}
+
+/* Reducir repaints en hover */
+.faq-item:hover,
+.faq-question:hover {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimización adicional para el botón */
+.faq-question:active {
+  transform: translateZ(0) scale(0.98);
+  transition: transform 0.05s ease;
+}
+
+/* Optimización para el ícono SVG */
+.toggle-icon svg {
+  transform: translateZ(0);
+  will-change: transform;
 }

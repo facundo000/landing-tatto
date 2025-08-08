@@ -12,16 +12,20 @@
 
 @font-face {
   font-family: 'SamuraiBlast';
-  src: url('./assets/fonts/SamuraiBlast.woff') format('woff');
+  src: url('./assets/fonts/SamuraiBlast.woff2') format('woff2'),
+       url('./assets/fonts/SamuraiBlast.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'HIROMISAKE';
-  src: url('./assets/fonts/HIROMISAKE.woff') format('woff');
+  src: url('./assets/fonts/Japan_wave.woff2') format('woff2'),
+       url('./assets/fonts/Japan_wave.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 html, body {

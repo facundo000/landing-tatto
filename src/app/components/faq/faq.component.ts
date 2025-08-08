@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
+import { AccordionModule } from 'primeng/accordion';
 
 interface FaqItem {
   id: number;
@@ -10,11 +11,14 @@ interface FaqItem {
 
 @Component({
   selector: 'app-faq',
-  imports: [ CommonModule ],
+  imports: [ CommonModule, AccordionModule ],
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FaqComponent { 
+  constructor(private cdr: ChangeDetectorRef) {}
+  
   faqs: FaqItem[] = [
     {
       id: 1,
@@ -37,9 +41,13 @@ export class FaqComponent {
   ];
 
   toggleFaq(id: number): void {
-    const faq = this.faqs.find(item => item.id === id);
-    if (faq) {
-      faq.isOpen = !faq.isOpen;
-    }
+    // Usar requestAnimationFrame para optimizar el rendimiento
+    requestAnimationFrame(() => {
+      const faq = this.faqs.find(item => item.id === id);
+      if (faq) {
+        faq.isOpen = !faq.isOpen;
+        this.cdr.markForCheck();
+      }
+    });
   }
 }
