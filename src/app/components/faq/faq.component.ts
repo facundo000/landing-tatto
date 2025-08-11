@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ChangeDetectorRef } from '@angular/core';
-import { AccordionModule } from 'primeng/accordion';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 interface FaqItem {
   id: number;
@@ -11,15 +10,15 @@ interface FaqItem {
 
 @Component({
   selector: 'app-faq',
-  imports: [ CommonModule, AccordionModule ],
+  imports: [ FormsModule ],
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FaqComponent { 
-  constructor(private cdr: ChangeDetectorRef) {}
   
-  faqs: FaqItem[] = [
+  // Signals para el estado reactivo
+  private readonly _faqs = signal<FaqItem[]>([
     {
       id: 1,
       question: '¿Cuál es el proceso para agendar una cita?',
@@ -37,17 +36,41 @@ export class FaqComponent {
       question: '¿Cómo debo cuidar mi tatuaje de estilo japonés?',
       answer: 'El cuidado de un tatuaje japonés es crucial para su correcta cicatrización y conservación de colores. Durante las primeras 2-3 semanas: mantén la zona limpia y seca, aplica pomada cicatrizante según las indicaciones, evita exposición directa al sol, no sumerjas el tatuaje en agua (piscinas, mar), usa ropa holgada y no rasques ni retires las costras. Te daremos instrucciones detalladas post-tatuaje.',
       isOpen: false
+    },
+    {
+      id: 4,
+      question: '¿Qué estilos de tatuaje oriental ofrecen?',
+      answer: 'Ofrecemos una amplia variedad de estilos orientales: Irezumi (tatuaje japonés tradicional), Neo-Japanese (versión moderna), Chinoiserie (estilo chino), y fusiones contemporáneas. Cada estilo tiene sus características únicas en términos de composición, color y simbolismo.',
+      isOpen: false
+    },
+    {
+      id: 5,
+      question: '¿Cuánto tiempo dura una sesión de tatuaje?',
+      answer: 'La duración de una sesión varía según el tamaño y complejidad del diseño. Las sesiones pequeñas pueden durar 2-3 horas, mientras que piezas grandes pueden requerir sesiones de 4-6 horas. Para tatuajes extensos, dividimos el trabajo en múltiples sesiones para tu comodidad.',
+      isOpen: false
     }
-  ];
+  ]);
+
+  // Computed signal para obtener los FAQs
+  readonly faqs = this._faqs.asReadonly();
 
   toggleFaq(id: number): void {
-    // Usar requestAnimationFrame para optimizar el rendimiento
-    requestAnimationFrame(() => {
-      const faq = this.faqs.find(item => item.id === id);
-      if (faq) {
-        faq.isOpen = !faq.isOpen;
-        this.cdr.markForCheck();
-      }
-    });
+    this._faqs.update(faqs => 
+      faqs.map(faq => 
+        faq.id === id 
+          ? { ...faq, isOpen: !faq.isOpen }
+          : faq
+      )
+    );
+  }
+
+  // Método helper para verificar si un FAQ está abierto
+  isFaqOpen(faq: FaqItem): boolean {
+    return faq.isOpen;
+  }
+
+  // Método helper para obtener el ID del answer
+  getAnswerId(faq: FaqItem): string {
+    return `faq-answer-${faq.id}`;
   }
 }

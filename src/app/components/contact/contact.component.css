@@ -10,6 +10,7 @@
 .contact-header {
   text-align: center;
   margin-bottom: 3rem;
+  align-items: center;
 }
 
 .contact-header h1 {
@@ -20,7 +21,7 @@
   color: #fff;
 }
 
-.dragon-divider {
+/* .dragon-divider {
   margin: 2rem 0;
   display: flex;
   justify-content: center;
@@ -30,7 +31,7 @@
   width: 350px;
   height: 50px;
   color: #dc2626;
-}
+} */
 
 /* Contact Content Layout */
 .contact-content {

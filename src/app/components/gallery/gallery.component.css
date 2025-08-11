@@ -3,12 +3,16 @@
       color: #fff;
       min-height: 100vh;
       padding: 2rem;
-      font-family: 'SamuraiBlast','HIROMISAKE', sans-serif;
+      font-family: var(--font-primary);
+    }
+
+    .gallery-grid{
+      font-family: sans-serif;
     }
 
     .gallery-header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 3rem;      
     }
 
     .gallery-header h1 {
@@ -18,15 +22,6 @@
       margin: 0;
       color: #fff;
     }
-
-    .dragon-decoration {
-      display: flex;
-      justify-content: center;
-      align-items: top;    
-    /* margin: 20px 0; */
-    }
-
-    
 
     .gallery-header h2 {
       font-size: 1.2rem;

@@ -1,7 +1,7 @@
 /* Optimizaciones de performance */
 .faq-section {
-  background: #cc0000;
-  background: linear-gradient(180deg, rgba(204, 0, 0, 1) 0%, rgba(184, 0, 0, 1) 5%, rgba(111, 0, 0, 1) 24%, rgba(59, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
+  background: #323943;
+background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 34%, rgba(0, 0, 0, 1) 100%);
   contain: layout style paint;
 }
 
@@ -17,7 +17,7 @@
 .faq-header {
   text-align: center;
   margin-bottom: 3rem;
-  contain: layout style;
+  contain: layout style;  
 }
 
 .faq-header h1 {
@@ -26,7 +26,7 @@
   letter-spacing: 0.2em;
   margin: 0;
   color: #fff;
-  font-family: 'SamuraiBlast', 'HIROMISAKE', sans-serif;
+  font-family: var(--font-primary);
   contain: layout style;
 }
 
@@ -207,6 +207,10 @@
   .answer-content p {
     font-size: 0.95rem;
   }
+  
+  .question-text {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -236,19 +240,10 @@
   outline-offset: 2px;
 }
 
-/* Optimización: Eliminamos la animación fadeIn que puede causar conflictos */
-
-@media (max-width: 768px) {
-  .dragon-line {
-    height: 15%;
-    width: 25%;
-  }
-}
-
 /* Optimizaciones adicionales para performance */
-.dragon-decoration {
+/* .dragon-decoration {
   contain: layout style;
-}
+} */
 
 .dragon-line {
   contain: layout style;
@@ -272,4 +267,9 @@
 .toggle-icon svg {
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* Optimización para zoneless */
+.faq-question {
+  contain: layout style;
 }
