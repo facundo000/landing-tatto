@@ -3,41 +3,46 @@
     <!-- Header -->
     <div class="faq-header">
       <h1>FAQs</h1>
-        <img src="assets/images/undeline_nb.svg" alt="Decoración con estrellas nórdico" class="line-decoration" width="300" height="100" loading="lazy">  
+      <img 
+        src="assets/images/undeline_nb.svg" 
+        alt="Decoración con estrellas nórdico" 
+        class="line-decoration" 
+        width="300" 
+        height="100" 
+        loading="lazy">  
     </div>
 
     <!-- FAQ Items -->
     <div class="faq-list">
       @for (faq of faqs(); track faq.id) {
-        <div 
-          class="faq-item"
-          [class.open]="isFaqOpen(faq)">
+        <div class="faq-item" [class.open]="faq.isOpen">
           
           <button 
             class="faq-question"
             (click)="toggleFaq(faq.id)"
-            [attr.aria-expanded]="isFaqOpen(faq)"
-            [attr.aria-controls]="getAnswerId(faq)"
+            [attr.aria-expanded]="faq.isOpen"
+            [attr.aria-controls]="'faq-answer-' + faq.id"
             type="button">
             
             <span class="question-number">{{ faq.id }}</span>
             <span class="question-text">{{ faq.question }}</span>
             
-            <span class="toggle-icon" [class.rotated]="isFaqOpen(faq)">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <span class="toggle-icon" [class.rotated]="faq.isOpen">
+              <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M19 9L12 16L5 9" 
                       stroke="currentColor" 
                       stroke-width="2" 
                       stroke-linecap="round" 
                       stroke-linejoin="round"/>
-              </svg>
+              </svg> -->
+              <span class="pi pi-angle-up" style="font-size: 1.5rem"></span>
             </span>
           </button>
 
           <div 
             class="faq-answer"
-            [id]="getAnswerId(faq)"
-            [attr.aria-hidden]="!isFaqOpen(faq)">
+            [id]="'faq-answer-' + faq.id"
+            [attr.aria-hidden]="!faq.isOpen">
             <div class="answer-content">
               <p>{{ faq.answer }}</p>
             </div>
@@ -47,7 +52,3 @@
     </div>
   </div>
 </section>
-
-<!-- <section>
-  <app-accordion></app-accordion>
-</section> -->

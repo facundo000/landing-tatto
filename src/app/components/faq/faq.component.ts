@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 interface FaqItem {
   id: number;
@@ -10,7 +9,7 @@ interface FaqItem {
 
 @Component({
   selector: 'app-faq',
-  imports: [ FormsModule ],
+  imports: [  ],
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -55,14 +54,45 @@ export class FaqComponent {
   readonly faqs = this._faqs.asReadonly();
 
   toggleFaq(id: number): void {
-    this._faqs.update(faqs => 
-      faqs.map(faq => 
-        faq.id === id 
-          ? { ...faq, isOpen: !faq.isOpen }
-          : faq
-      )
-    );
-  }
+  const faqs = this._faqs();
+  const index = faqs.findIndex(f => f.id === id);
+  const faq = faqs[index];
+  const isOpening = !faq.isOpen;
+
+  // actualizar el estado IsOpen en el array
+  this._faqs.update(arr => arr.map(f =>
+    f.id === id ? { ...f, isOpen: isOpening } : f
+  ));
+
+  // animación de altura
+  requestAnimationFrame(() => {
+    const el = document.getElementById(`faq-answer-${id}`);
+    if (!el) return;
+
+    if (isOpening) {
+      const fullHeight = el.scrollHeight;
+      el.style.height = '0px';
+      requestAnimationFrame(() => {
+        el.style.height = fullHeight + 'px';
+      });
+    } else {
+      const currHeight = el.scrollHeight;
+      el.style.height = currHeight + 'px';
+      requestAnimationFrame(() => {
+        el.style.height = '0px';
+      });
+    }
+
+    // luego de la animación, limpiar el estilo inline
+    el.addEventListener('transitionend', () => {
+      if (isOpening) {
+        el.style.height = 'auto';
+      } else {
+        el.style.height = '';
+      }
+    }, { once: true });
+  });
+}
 
   // Método helper para verificar si un FAQ está abierto
   isFaqOpen(faq: FaqItem): boolean {

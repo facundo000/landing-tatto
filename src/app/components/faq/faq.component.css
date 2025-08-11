@@ -48,23 +48,10 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
 .faq-item {
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   background: rgba(0, 0, 0, 0.3);
-  font-family: 'HIROMISAKE', sans-serif;
-  will-change: border-color, box-shadow;
-  contain: layout style;
+  transition: background-color 0.2s ease;
 }
 
-.faq-item:hover {
-  border-color: rgba(220, 38, 38, 0.5);
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
-}
-
-.faq-item.open {
-  border-color: #dc2626;
-  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.2);
-}
 
 /* Question Button Styles */
 .faq-question {
@@ -81,7 +68,7 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
   cursor: pointer;
   transition: background-color 0.15s ease;
   text-align: left;
-  font-family: 'HIROMISAKE', sans-serif;
+  font-family: var(--font-secondary);
   will-change: background-color;
   contain: layout style;
   transform: translateZ(0);
@@ -138,16 +125,15 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
 
 /* Answer Styles - Optimizado para mejor performance */
 .faq-answer {
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: grid-template-rows;
-  contain: layout style;
-  display: grid;
-  overflow: hidden;
+  max-height: 0;
+  /* overflow: hidden; */
+  transition: max-height 0.10s ease-out;
+  font-family: var(--font-secondary);
+  padding-top: 1rem;
 }
 
 .faq-item.open .faq-answer {
-  grid-template-rows: 1fr;
+  max-height: 500px; 
 }
 
 .answer-content {
