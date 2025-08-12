@@ -10,7 +10,7 @@ interface TattooImage {
 
 @Component({
   selector: 'app-gallery',
-  imports: [CommonModule ],
+  imports: [ ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.css',
 })

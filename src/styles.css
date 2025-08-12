@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importar estilos de PrimeNG */
-/* @import "primeicons/primeicons.css"; */
+@import "primeicons/primeicons.css";
 
 /* Reset CSS básico */
 * {
@@ -11,29 +11,34 @@
 }
 
 @font-face {
-  font-family: 'SamuraiBlast';
-  src: url('./assets/fonts/SamuraiBlast.woff') format('woff');
+  font-family: 'Rune';
+  src: url('./assets/fonts/Rune.woff') format('woff'),
+       sans-serif;
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'HIROMISAKE';
-  src: url('./assets/fonts/HIROMISAKE.woff') format('woff');
+  font-family: 'Arcadian';
+  src: url('./assets/fonts/Acadian_Runes.woff') format('woff'),
+       sans-serif;
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
+
 
 html, body {
   height: 100%;
-  font-family: 'SamuraiBlast', 'HIROMISAKE', sans-serif;
+  font-family: 'Rune','Arcadian', sans-serif;
   background-color: #000000;
   color: #ffffff;
 }
 
 body {
   margin: 0;
-  font-family: 'SamuraiBlast','HIROMISAKE';  
+  font-family: 'Rune','Arcadian';  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -41,10 +46,13 @@ body {
 /* Variables CSS globales */
 :root {
   --primary-red: #dc2626;
-  --dark-red: #991b1b;
-  --white: #ffffff;
-  --black: #000000;
-  --dark-gray: #1a1a1a;
+  --dark-red: #8B3037;
+  --gray: #535F6F;
+  --white: #D8CEC2;
+  --french-blue: #243141;
+  --dark-gray: #151C26;
+  --font-primary: 'Rune', sans-serif;
+  --font-secondary: 'Arcadian', sans-serif;
 }
 
 /* Estilos para el scroll */
