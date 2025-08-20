@@ -4,6 +4,6 @@
   align-items: center;
   padding: 2rem;
   background-color: #1a1a1a;
-  color: #fff;
-  font-family: 'HIROMISAKE', sans-serif;
+  color: var(--white);
+  font-family: sans-serif;
 }

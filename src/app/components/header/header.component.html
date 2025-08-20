@@ -1,7 +1,5 @@
 <header class="header-container">
-  <!-- Sección superior con navegación -->
   <div class="header-top">
-    <!-- Logo de la marca -->
     <div class="brand-section">
       <div class="brand-logo">
         <span class="japanese-characters">{{ brandLogo }}</span>
@@ -9,12 +7,11 @@
       </div>
     </div>
 
-    <!-- Navegación -->
     <nav class="navigation">
       <ul class="nav-list">
         @for (item of getNavigationItems(); track item) {
           <li
-            class="nav-item"
+            class="nav-item focus-outline"
             [routerLink]="item.route"
             routerLinkActive="active"
             >
@@ -25,7 +22,6 @@
     </nav>
   </div>
 
-  <!-- Sección de suscripción -->
   <div class="subscription-section">
     <div class="subscription-content">
       <p class="subscription-text">{{ subscriptionText }}</p>
@@ -35,8 +31,7 @@
           <input
             type="email"
             pInputText
-            class="email-input"
-            [placeholder]="subscriptionPlaceholder"
+            class="primary-input" [placeholder]="subscriptionPlaceholder"
             [(ngModel)]="emailSubscription"
             name="emailSubscription"
             (keypress)="onInputKeyPress($event)"
@@ -45,15 +40,13 @@
             <button
               type="submit"
               pButton
-              class="submit-button"              
-              [disabled]="!emailSubscription.trim()">
-              <i class="pi pi-send" style="font-size: 1.5rem; color: white;"></i>
+              class="primary-button" [disabled]="!emailSubscription.trim()">
+              <i class="pi pi-send" style="font-size: 1.5rem;"></i>
             </button>
           </div>
         </form>
     </div>
   </div>
 
-    <!-- Línea divisoria -->
     <div class="divider-line"></div>
-  </header>
+</header>

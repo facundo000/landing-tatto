@@ -1,8 +1,7 @@
-<section class="faq-section">
-  <div class="faq-container">
-    <!-- Header -->
-    <div class="faq-header">
-      <h1>FAQs</h1>
+<section class="gradient-section">
+  <div class="main-container section-container">
+    <div class="section-header">
+      <h1 class="section-title">FAQs</h1>
       <img 
         src="assets/images/undeline_nb.svg"
         alt="Decoración con estrellas nórdico"
@@ -10,18 +9,17 @@
         loading="lazy">
     </div>
 
-    <!-- FAQ Items List -->
     <div class="faq-list">
       @for (item of faqItems; track $index) {
         <div class="faq-item" [class.open]="openItemIndex() === $index" (click)="toggleItem($index)">
-          <button class="faq-question" type="button">
+          <button class="faq-question focus-outline" type="button">
             <span class="question-number">{{ $index + 1 }}</span>
             <span class="question-text">{{ item.question }}</span>
             <span class="toggle-icon" [class.rotated]="openItemIndex() === $index">
               <i class="bi bi-chevron-down"></i>
             </span>
           </button>
-          <div class="faq-answer">
+          <div class="faq-answer" @fadeInUp>
             <div class="answer-content">
               <p>{{ item.answer }}</p>
             </div>
