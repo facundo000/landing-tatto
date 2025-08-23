@@ -1,59 +1,18 @@
-/* Optimizaciones de performance */
-.faq-section {
-  background: #323943;
-background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 34%, rgba(0, 0, 0, 1) 100%);
-  contain: layout style paint;
-}
+/* Estilos específicos para el componente de FAQ */
 
-.faq-container {
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-  color: #fff;
-  contain: layout style;
-}
-
-/* Header Styles */
-.faq-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  contain: layout style;  
-}
-
-.faq-header h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  letter-spacing: 0.2em;
-  margin: 0;
-  color: #fff;
-  font-family: var(--font-primary);
-  contain: layout style;
-}
-
-.dragon-divider {
-  margin: 2rem 0;
-  display: flex;
-  justify-content: center;
-  contain: layout style;
-}
-
-/* FAQ List Styles */
 .faq-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  contain: layout style;
 }
 
 .faq-item {
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.3);
-  transition: background-color 0.2s ease;
+  overflow: hidden; /* Importante para que el fondo del hover no se salga del borde redondeado */
 }
 
-
-/* Question Button Styles */
 .faq-question {
   width: 100%;
   display: flex;
@@ -62,16 +21,13 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
   padding: 1.5rem 2rem;
   background: transparent;
   border: none;
-  color: #fff;
+  color: var(--white);
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease;
   text-align: left;
   font-family: var(--font-secondary);
-  will-change: background-color;
-  contain: layout style;
-  transform: translateZ(0);
+  transition: background-color 0.3s ease;
 }
 
 .faq-question:hover {
@@ -80,7 +36,6 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
 
 .faq-item.open .faq-question {
   background: rgba(180, 18, 18, 0.15);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.3);
 }
 
 .question-number {
@@ -89,67 +44,47 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  background: #dc2626;
-  color: #fff;
+  background: var(--primary-red);
+  color: var(--white);
   border-radius: 4px;
   font-weight: bold;
   font-size: 1.5rem;
   flex-shrink: 0;
-  contain: layout style;
 }
 
 .question-text {
   flex: 1;
   line-height: 1.4;
   font-size: 1.5rem;
-  contain: layout style;
 }
 
 .toggle-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 2rem;
   height: 2rem;
-  color: #ffffff;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--white);
   flex-shrink: 0;
-  will-change: transform;
-  contain: layout style;
-  transform: translateZ(0);
+  transition: transform 0.3s ease;
+  transform: rotate(0deg);
 }
 
 .toggle-icon.rotated {
-  transform: rotate(180deg) translateZ(0);
+  transform: rotate(180deg);
 }
 
-/* Answer Styles - Optimizado para mejor performance */
 .faq-answer {
-  max-height: 0;
-  /* overflow: hidden; */
-  transition: max-height 0.10s ease-out;
+  display: none; /* Oculta la respuesta por defecto */
   font-family: var(--font-secondary);
   padding-top: 1rem;
 }
 
 .faq-item.open .faq-answer {
-  max-height: 500px; 
+  display: block; /* Muestra la respuesta cuando el item tiene la clase .open */
 }
 
 .answer-content {
   padding: 0 2rem 2rem 2rem;
-  margin-left: 3rem; /* Align with question text */
-  contain: layout style;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  will-change: opacity, transform;
-  min-height: 0;
-}
-
-.faq-item.open .answer-content {
-  opacity: 1;
-  transform: translateY(0);
+  margin-left: 3rem; 
+  font-family: Arial, Helvetica;
 }
 
 .answer-content p {
@@ -157,23 +92,10 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
   font-size: 1.2rem;
-  contain: layout style;
 }
 
-/* Responsive Design */
+/* ========== Media Queries Específicas del Componente ========== */
 @media (max-width: 768px) {
-  .faq-container {
-    padding: 1rem;
-  }
-  
-  .faq-header h1 {
-    font-size: 2rem;
-  }
-  
-  .dragon-svg {
-    width: 280px;
-  }
-  
   .faq-question {
     padding: 1rem 1.5rem;
     font-size: 1rem;
@@ -185,6 +107,10 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
     font-size: 0.9rem;
   }
   
+  .question-text {
+    font-size: 1.2rem;
+  }
+  
   .answer-content {
     padding: 0 1.5rem 1.5rem 1.5rem;
     margin-left: 2.5rem;
@@ -192,10 +118,6 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
   
   .answer-content p {
     font-size: 0.95rem;
-  }
-  
-  .question-text {
-    font-size: 1.2rem;
   }
 }
 
@@ -205,57 +127,12 @@ background: linear-gradient(180deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 
     gap: 0.75rem;
   }
   
+  .question-text {
+    font-size: 0.95rem;
+  }
+
   .answer-content {
     margin-left: 2rem;
     padding: 0 1rem 1rem 1rem;
   }
-  
-  .question-text {
-    font-size: 0.95rem;
-  }
-}
-
-/* Focus and Accessibility */
-.faq-question:focus {
-  outline: 2px solid #dc2626;
-  outline-offset: 2px;
-}
-
-.faq-question:focus-visible {
-  outline: 2px solid #dc2626;
-  outline-offset: 2px;
-}
-
-/* Optimizaciones adicionales para performance */
-/* .dragon-decoration {
-  contain: layout style;
-} */
-
-.dragon-line {
-  contain: layout style;
-  will-change: auto;
-}
-
-/* Reducir repaints en hover */
-.faq-item:hover,
-.faq-question:hover {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Optimización adicional para el botón */
-.faq-question:active {
-  transform: translateZ(0) scale(0.98);
-  transition: transform 0.05s ease;
-}
-
-/* Optimización para el ícono SVG */
-.toggle-icon svg {
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-/* Optimización para zoneless */
-.faq-question {
-  contain: layout style;
 }

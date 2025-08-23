@@ -6,7 +6,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { HotjarService } from '../../services/hotjar.service';
 import { PrimeNG } from 'primeng/config'
 
 interface NavigationItem {
@@ -27,7 +26,6 @@ interface NavigationItem {
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
-  private readonly hotjarService = inject(HotjarService);
   
   private readonly navigationItems: NavigationItem[] = [
     { label: 'HOME', route: '/home' },
@@ -131,20 +129,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     return this.navigationItems;
   }
 
-  public onNavigationClick(item: NavigationItem): void {
-    // Tracking de Hotjar para navegación
-    this.hotjarService.trackNavigation(item.label.toLowerCase().replace(' ', '_'), {
-      route: item.route,
-      navigation_item: item.label
-    });
-  }
+  
 
   public onSubmitSubscription(): void {
     if (this.emailSubscription.trim()) {
-      // Tracking de Hotjar
-      this.hotjarService.trackFormSubmission('email_subscription', {
-        email: this.emailSubscription
-      });
       
       // Aquí se implementaría la lógica de suscripción
       console.log('Email suscrito:', this.emailSubscription);

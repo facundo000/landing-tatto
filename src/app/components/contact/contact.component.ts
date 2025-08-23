@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 // import { CommonModule } from '@angular/common';
-import { HotjarService } from '../../services/hotjar.service';
 import { FormsModule } from '@angular/forms';
 
 interface ContactInfo {
@@ -23,9 +22,7 @@ interface SocialMedia {
 })
 export class ContactComponent { 
   public emailSubscription = '';
-  private readonly hotjarService = inject(HotjarService);
-  public readonly subscriptionText = 'suscribete a promociones';
-  public readonly submitButtonIcon = 'pi pi-send';
+
 
   contactInfo: ContactInfo = {
     address: 'Camino del Dragón 7822',
@@ -50,14 +47,10 @@ export class ContactComponent {
       icon: 'facebook'
     }
   ];
-subscriptionPlaceholder: any;
+subscriptionPlaceholder: any = 'Loki@gmail.com';
 
   public onSubmitSubscription(): void {
     if (this.emailSubscription.trim()) {
-      // Tracking de Hotjar
-      this.hotjarService.trackFormSubmission('email_subscription', {
-        email: this.emailSubscription
-      });
       
       // Aquí se implementaría la lógica de suscripción
       console.log('Email suscrito:', this.emailSubscription);
