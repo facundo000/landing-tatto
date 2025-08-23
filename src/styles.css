@@ -40,6 +40,7 @@ body {
   font-family: 'Rune','Arcadian';  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* margin-top: 15rem;  */
 }
 
 /* Variables CSS globales */
@@ -52,6 +53,8 @@ body {
   --dark-gray: #151C26;
   --font-primary: 'Rune', sans-serif;
   --font-secondary: 'Arcadian', sans-serif;
+  --font-size-pr: 1.2rem;
+  --mg-t: 4rem;
 }
 
 /* ESTILOS GLOBALES COMPARTIDOS */
@@ -78,7 +81,7 @@ body {
 }
 
 .section-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
   letter-spacing: 0.2em;
   margin: 0;

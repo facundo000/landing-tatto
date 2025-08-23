@@ -1,5 +1,11 @@
 /* Estilos específicos para el componente "Sobre mí" */
 
+.gradient-section-reverse{
+  margin-top: 20rem;
+  background: #323943;
+  background: linear-gradient(0deg, rgba(50, 57, 67, 1) 6%, rgba(26, 29, 34, 1) 34%, rgba(0, 0, 0, 1) 100%);
+}
+
 .content-section {
   /* La disposición en grid ahora la maneja la clase global .content-grid */
   align-items: center;
@@ -53,6 +59,7 @@
 
 .text-content {
   padding-left: 20px;
+  
 }
 .section-subtitle{
   font-size: 2rem;
@@ -60,7 +67,8 @@
 }
 
 .description {
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
+  font-size: var(--font-size-pr);
   line-height: 1.8;
   margin-bottom: 25px;
   text-align: justify;
@@ -108,7 +116,7 @@
     height: 200px;
   }
   .line-decoration {
-    width: 120px;
-    height: 43px;
+    width: 200px;
+    height: 60px;
   }
 }
