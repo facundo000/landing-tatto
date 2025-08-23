@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
-
+import { Component, OnInit, AfterViewInit, inject, HostListener } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,7 +20,8 @@ interface NavigationItem {
     FormsModule,
     RouterModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    NgClass
 ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -38,13 +39,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   public readonly brandName = 'RYUU';
   public readonly brandLogo = '龍刺青';
   public readonly subscriptionPlaceholder = 'Tu email';
-  public readonly subscriptionText = 'suscribete a promociones';
+  public readonly subscriptionText = 'suscribete a promociones:';
   public readonly submitButtonIcon = 'pi pi-send';
 
   public emailSubscription = '';
+  public isScrolled = false;
+  public isNavigationActive = false;
+  public isMobile = false;
 
   ngOnInit(): void {
-    // Inicialización básica
+    this.checkScreenSize();
   }
 
   ngAfterViewInit(): void {
@@ -68,21 +72,23 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       }
     );
 
-    // Animación de los elementos de navegación
-    gsap.fromTo('.nav-item', 
-      { 
-        y: -20, 
-        opacity: 0 
-      },
-      { 
-        y: 0, 
-        opacity: 1, 
-        duration: 0.8, 
-        stagger: 0.1, 
-        ease: 'power2.out',
-        delay: 0.3
-      }
-    );
+    // Animación de los elementos de navegación (solo si no es móvil)
+    if (!this.isMobile) {
+      gsap.fromTo('.nav-item', 
+        { 
+          y: -20, 
+          opacity: 0 
+        },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 0.8, 
+          stagger: 0.1, 
+          ease: 'power2.out',
+          delay: 0.3
+        }
+      );
+    }
 
     // Animación del formulario de suscripción
     gsap.fromTo('.subscription-form', 
@@ -99,8 +105,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       }
     );
 
-    // Efectos hover para los elementos de navegación
-    this.setupHoverEffects();
+    // Efectos hover para los elementos de navegación (solo en desktop)
+    if (!this.isMobile) {
+      this.setupHoverEffects();
+    }
   }
 
   private setupHoverEffects(): void {
@@ -125,16 +133,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
   public getNavigationItems(): NavigationItem[] {
     return this.navigationItems;
   }
 
-  
-
   public onSubmitSubscription(): void {
     if (this.emailSubscription.trim()) {
-      
-      // Aquí se implementaría la lógica de suscripción
       console.log('Email suscrito:', this.emailSubscription);
       
       // Animación de éxito
@@ -155,4 +163,86 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.onSubmitSubscription();
     }
   }
-} 
+
+  public toggleNavigation(): void {
+    if (!this.isMobile) return;
+
+    this.isNavigationActive = !this.isNavigationActive;
+
+    // Usamos setTimeout para asegurar que Angular actualice el DOM antes de que GSAP busque los elementos.
+    setTimeout(() => {
+      if (this.isNavigationActive) {
+        // Animación de entrada (ahora sí encontrará .nav-list.active)
+        gsap.fromTo('.nav-list.active', 
+          { 
+            x: '-100%', 
+            opacity: 0 
+          },
+          { 
+            x: 0, 
+            opacity: 1, 
+            duration: 0.3, 
+            ease: 'power2.out' 
+          }
+        );
+
+        // Animación de los ítems del menú
+        gsap.fromTo('.nav-list.active .nav-item', 
+          { 
+            x: -20, 
+            opacity: 0 
+          },
+          { 
+            x: 0, 
+            opacity: 1, 
+            duration: 0.3, 
+            stagger: 0.1, 
+            ease: 'power2.out',
+            delay: 0.1
+          }
+        );
+      }
+      // Nota: Si tienes una animación de salida para cuando se cierra el menú, 
+      // también debería ir dentro de este setTimeout, en un bloque 'else'.
+    }, 0); // Un retardo de 0 es suficiente.
+  }
+
+  // Cerrar el menú móvil al hacer clic en un enlace
+  public closeNavigationOnMobile(): void {
+    if (this.isMobile && this.isNavigationActive) {
+      this.isNavigationActive = false;
+    }
+  }
+
+  @HostListener('window:scroll', [])
+  public onWindowScroll(): void {
+    const offset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.isScrolled = offset > 50;
+  }
+
+  @HostListener('window:resize', [])
+  public onWindowResize(): void {
+    const wasMove = this.isMobile;
+    this.checkScreenSize();
+    
+    // Si cambió de móvil a desktop, cerrar el menú móvil
+    if (wasMove && !this.isMobile) {
+      this.isNavigationActive = false;
+    }
+  }
+
+  // Cerrar el menú móvil al hacer clic fuera de él
+  @HostListener('document:click', ['$event'])
+  public onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    const navigation = document.querySelector('.navigation');
+    const navToggle = document.querySelector('.nav-toggle');
+    
+    if (this.isMobile && this.isNavigationActive && 
+        navigation && navToggle &&
+        !navigation.contains(target) && 
+        !navToggle.contains(target)) {
+      this.isNavigationActive = false;
+    }
+  }
+}

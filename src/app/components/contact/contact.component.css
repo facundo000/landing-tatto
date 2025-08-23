@@ -1,6 +1,6 @@
-/* Estilos específicos para el componente de Contacto */
-
-/* Layout del Grid de Contacto (se mantiene como en el original) */
+.gradient-section{
+  margin-top: var(--mg-t);
+}
 .contact-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -52,7 +52,7 @@
 
 .info-item h3 {
   color: var(--primary-red);
-  font-size: 1.2rem;
+  font-size: var(--font-size-pr);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;  
@@ -61,7 +61,7 @@
 .info-item p {
   margin: 0;
   color: var(--white);
-  font-size: 1.1rem;
+  font-size: var(--font-size-pr);
   line-height: 1.6;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -107,7 +107,11 @@
   }
   
   .info-item h3 {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+  }
+
+  .info-item p {
+    font-size: 0.9rem;
   }
   
   .map-container {
