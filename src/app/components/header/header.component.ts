@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, inject, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -6,11 +6,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { PrimeNG } from 'primeng/config'
 
 interface NavigationItem {
   label: string;
-  route: string;
+  sectionId: string;
 }
 
 @Component({
@@ -18,41 +17,57 @@ interface NavigationItem {
   standalone: true,
   imports: [
     FormsModule,
-    RouterModule,
     InputTextModule,
     ButtonModule,
     NgClass
-],
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   
+  // ========== PROPIEDADES READONLY ==========
   private readonly navigationItems: NavigationItem[] = [
-    { label: 'HOME', route: '/home' },
-    { label: 'SOBRE MI', route: '/sobre-mi' },
-    { label: 'GALERIA', route: '/galeria' },
-    { label: 'FAQs', route: '/faqs' },
-    { label: 'CONTACTO', route: '/contacto' }
+    { label: 'HOME', sectionId: 'home' },
+    { label: 'SOBRE MI', sectionId: 'sobre-mi' },
+    { label: 'GALERIA', sectionId: 'galeria' },
+    { label: 'FAQs', sectionId: 'faqs' },
+    { label: 'CONTACTO', sectionId: 'contacto' }
   ];
 
   public readonly brandName = 'RYUU';
   public readonly brandLogo = '龍刺青';
   public readonly subscriptionPlaceholder = 'Tu email';
-  public readonly subscriptionText = 'suscribete a promociones:';
-  public readonly submitButtonIcon = 'pi pi-send';
+  public readonly subscriptionText = 'suscríbete a promociones:';
 
+  // ========== PROPIEDADES REACTIVAS ==========
   public emailSubscription = '';
   public isScrolled = false;
   public isNavigationActive = false;
   public isMobile = false;
+  public activeSection = 'home';
 
+  // ========== REFERENCIAS PARA CLEANUP ==========
+  private intersectionObserver?: IntersectionObserver;
+
+  // ========== LIFECYCLE HOOKS ==========
   ngOnInit(): void {
     this.checkScreenSize();
   }
 
   ngAfterViewInit(): void {
     this.initializeAnimations();
+    this.setupSectionObserver();
+    this.checkCurrentSection();
+  }
+
+  ngOnDestroy(): void {
+    this.cleanup();
+  }
+
+  // ========== INICIALIZACIÓN ==========
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   private initializeAnimations(): void {
@@ -133,10 +148,116 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private checkScreenSize(): void {
-    this.isMobile = window.innerWidth <= 768;
+  // ========== RESPONSIVE HANDLING ==========
+
+  // ========== NAVEGACIÓN Y SCROLL ==========
+  public navigateToSection(event: MouseEvent, sectionId: string): void {
+    event.preventDefault();
+
+    // Actualizar sección activa inmediatamente para feedback visual
+    this.activeSection = sectionId;
+
+    if (sectionId === 'home') {
+      // Ir al inicio de la página
+      window.scrollTo({ 
+        top: 0, 
+        behavior: 'smooth' 
+      });
+      this.updateUrl('');
+    } else {
+      // Buscar el elemento de la sección
+      const element = document.getElementById(sectionId);
+      
+      if (element) {
+        const headerOffset = 180; // Altura del header fijo
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+
+        this.updateUrl(sectionId);
+      } else {
+        console.warn(`Sección '${sectionId}' no encontrada en el DOM`);
+      }
+    }
+
+    // Cerrar menú móvil
+    this.closeNavigationOnMobile();
   }
 
+  private updateUrl(sectionId: string): void {
+    const url = sectionId ? `#${sectionId}` : '';
+    history.pushState(null, '', url);
+  }
+
+  private checkCurrentSection(): void {
+    // Verificar si hay un hash en la URL al cargar
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      this.activeSection = hash;
+      // Pequeño delay para asegurar que el DOM esté listo
+      setTimeout(() => {
+        this.scrollToSection(hash);
+      }, 200);
+    }
+  }
+
+  private scrollToSection(sectionId: string): void {
+    if (sectionId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 180;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  private setupSectionObserver(): void {
+    // Configurar intersection observer para detectar la sección visible
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px', // Detectar cuando la sección está en el centro
+      threshold: 0.1
+    };
+
+    this.intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          if (sectionId && this.activeSection !== sectionId) {
+            this.activeSection = sectionId;
+            this.updateUrl(sectionId === 'home' ? '' : sectionId);
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observar todas las secciones que existan
+    this.navigationItems.forEach(item => {
+      const element = document.getElementById(item.sectionId);
+      if (element) {
+        this.intersectionObserver?.observe(element);
+      }
+    });
+
+    // También observar si existe una sección home específica
+    const homeElement = document.getElementById('home');
+    if (homeElement) {
+      this.intersectionObserver.observe(homeElement);
+    }
+  }
   public getNavigationItems(): NavigationItem[] {
     return this.navigationItems;
   }
@@ -160,6 +281,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   public onInputKeyPress(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
+      event.preventDefault();
       this.onSubmitSubscription();
     }
   }
@@ -202,47 +324,79 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           }
         );
       }
-      // Nota: Si tienes una animación de salida para cuando se cierra el menú, 
-      // también debería ir dentro de este setTimeout, en un bloque 'else'.
-    }, 0); // Un retardo de 0 es suficiente.
+    }, 0);
   }
 
-  // Cerrar el menú móvil al hacer clic en un enlace
   public closeNavigationOnMobile(): void {
     if (this.isMobile && this.isNavigationActive) {
+      
       this.isNavigationActive = false;
     }
   }
 
+  // ========== HOST LISTENERS ==========
   @HostListener('window:scroll', [])
   public onWindowScroll(): void {
-    const offset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.isScrolled = offset > 50;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    this.isScrolled = scrollTop > 50;
   }
 
   @HostListener('window:resize', [])
   public onWindowResize(): void {
-    const wasMove = this.isMobile;
+    const wasMobile = this.isMobile;
     this.checkScreenSize();
     
     // Si cambió de móvil a desktop, cerrar el menú móvil
-    if (wasMove && !this.isMobile) {
+    if (wasMobile && !this.isMobile) {
       this.isNavigationActive = false;
     }
   }
 
-  // Cerrar el menú móvil al hacer clic fuera de él
   @HostListener('document:click', ['$event'])
   public onDocumentClick(event: Event): void {
+    if (!this.isMobile || !this.isNavigationActive) {
+      return;
+    }
+
     const target = event.target as HTMLElement;
-    const navigation = document.querySelector('.navigation');
-    const navToggle = document.querySelector('.nav-toggle');
+    const navigation = document.querySelector('.navigation') as HTMLElement;
+    const navToggle = document.querySelector('.nav-toggle') as HTMLElement;
     
-    if (this.isMobile && this.isNavigationActive && 
-        navigation && navToggle &&
+    // Cerrar si se hace clic fuera del menú y del toggle
+    if (navigation && navToggle && 
         !navigation.contains(target) && 
         !navToggle.contains(target)) {
       this.isNavigationActive = false;
+    }
+  }
+
+  @HostListener('window:hashchange', [])
+  public onHashChange(): void {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      this.activeSection = hash;
+      this.scrollToSection(hash);
+    } else {
+      this.activeSection = 'home';
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  public onKeyDown(event: KeyboardEvent): void {
+    // Cerrar menú con Escape
+    if (event.key === 'Escape' && this.isMobile && this.isNavigationActive) {
+      this.isNavigationActive = false;
+    }
+  }
+
+  // ========== CLEANUP ==========
+  private cleanup(): void {
+    // Limpiar ScrollTriggers
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+    // Limpiar IntersectionObserver
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
     }
   }
 }
