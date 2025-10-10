@@ -45,8 +45,10 @@ body {
 
 /* Variables CSS globales */
 :root {
-  --primary-red: #dc2626;
-  --dark-red: #8B3037;
+  /* --primary-red: #dc2626; */
+  --primary-red: #5776a1;
+  /* --dark-red: #8B3037; */
+  --dark-red: #9fbde7;
   --gray: #535F6F;
   --white: #D8CEC2;
   --french-blue: #243141;
@@ -185,10 +187,10 @@ body {
 }
 
 .social-btn:hover {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: var(--dark-gray);
+  border-color: var(--dark-red);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 5px 15px var(--french-blue);
 }
 
 .instagram-btn {

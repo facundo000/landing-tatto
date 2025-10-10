@@ -22,7 +22,7 @@ interface NavigationItem {
     NgClass
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   
@@ -35,8 +35,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'CONTACTO', sectionId: 'contacto' }
   ];
 
-  public readonly brandName = 'RYUU';
-  public readonly brandLogo = '龍刺青';
+  public readonly brandName = 'Nery Tattoo';
+  // public readonly brandLogo = 'assets/valkur_1.png';
   public readonly subscriptionPlaceholder = 'Tu email';
   public readonly subscriptionText = 'suscríbete a promociones:';
 
@@ -46,6 +46,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   public isNavigationActive = false;
   public isMobile = false;
   public activeSection = 'home';
+  private headerOffset = 180; // mantener el mismo offset usado para el scrollToSection
 
   // ========== REFERENCIAS PARA CLEANUP ==========
   private intersectionObserver?: IntersectionObserver;
@@ -59,6 +60,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeAnimations();
     this.setupSectionObserver();
     this.checkCurrentSection();
+    // Comprobación inicial por scroll como fallback si el IntersectionObserver no detecta correctamente
+    setTimeout(() => this.updateActiveSectionFromScroll(), 300);
   }
 
   ngOnDestroy(): void {
@@ -169,7 +172,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       const element = document.getElementById(sectionId);
       
       if (element) {
-        const headerOffset = 180; // Altura del header fijo
+  const headerOffset = this.headerOffset; // Altura del header fijo
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -191,6 +194,46 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private updateUrl(sectionId: string): void {
     const url = sectionId ? `#${sectionId}` : '';
     history.pushState(null, '', url);
+  }
+
+  /**
+   * Fallback: calcula la sección activa en base a la posición en el viewport.
+   * Se usa cuando el IntersectionObserver no actualiza correctamente (por ejemplo,
+   * si los elementos se renderizan tardíamente o cambian de tamaño).
+   */
+  private updateActiveSectionFromScroll(): void {
+    try {
+      for (const item of this.navigationItems) {
+        const el = document.getElementById(item.sectionId);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const top = rect.top;
+        const bottom = rect.bottom;
+
+        // Si la parte superior de la sección está por encima del headerOffset
+        // y la parte inferior está por debajo del headerOffset, consideramos
+        // que la sección está activa.
+        if (top <= this.headerOffset && bottom > this.headerOffset) {
+          if (this.activeSection !== item.sectionId) {
+            this.activeSection = item.sectionId;
+            this.updateUrl(item.sectionId === 'home' ? '' : item.sectionId);
+          }
+          return;
+        }
+      }
+
+      // Si no hay ninguna sección encontrada y estamos al tope de la página,
+      // forzamos 'home'.
+      if ((window.pageYOffset || document.documentElement.scrollTop || 0) === 0) {
+        if (this.activeSection !== 'home') {
+          this.activeSection = 'home';
+          this.updateUrl('');
+        }
+      }
+    } catch (err) {
+      // No bloquear si hay errores de acceso al DOM
+      // console.warn('updateActiveSectionFromScroll error', err);
+    }
   }
 
   private checkCurrentSection(): void {
@@ -237,8 +280,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id;
           if (sectionId && this.activeSection !== sectionId) {
-            this.activeSection = sectionId;
-            this.updateUrl(sectionId === 'home' ? '' : sectionId);
+            // Diferir la asignación para evitar ExpressionChangedAfterItHasBeenCheckedError
+            setTimeout(() => {
+              this.activeSection = sectionId;
+              this.updateUrl(sectionId === 'home' ? '' : sectionId);
+            }, 0);
           }
         }
       });
@@ -339,6 +385,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   public onWindowScroll(): void {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
     this.isScrolled = scrollTop > 50;
+    // Actualizar sección activa según scroll como fallback
+    this.updateActiveSectionFromScroll();
   }
 
   @HostListener('window:resize', [])
