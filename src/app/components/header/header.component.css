@@ -1,5 +1,9 @@
 /* Estilos específicos para el componente Header */
 
+.pi-send{
+  color: var(--dark-gray);
+}
+
 .header-container {
   background-color: var(--dark-gray);
   color: var(--white);
@@ -38,24 +42,34 @@
   align-items: center;
 }
 
-.brand-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.japanese-characters {
-  color: var(--primary-red);
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
 .brand-name {
   color: var(--white);
   font-size: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;  
+}
+/* Logo: símbolo (japanese) + nombre */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* más espacio entre símbolo y nombre */
+}
+
+
+.brand-name {
+  color: var(--white);
+  font-size: 1.6rem; /* ligeramente menor que el símbolo */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.brand-logo img {
+  display: block;
+  height: 48px; /* tamaño por defecto para imagen en desktop */
+  width: auto;
 }
 
 /* Toggle de navegación - OCULTO por defecto */
@@ -254,10 +268,6 @@
   .brand-logo {
     gap: 0.3rem;
   }
-
-  .japanese-characters {
-    font-size: 1.1rem;
-  }
   
   .brand-name {
     font-size: 1.1rem;
@@ -319,7 +329,6 @@
     padding: 0 0.75rem;
   }
   
-  .japanese-characters,
   .brand-name {
     font-size: 1rem;
   }

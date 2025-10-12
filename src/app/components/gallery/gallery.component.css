@@ -5,14 +5,16 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* Responsive grid: las columnas se adaptan al ancho disponible */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
-  max-width: 800px;
+  max-width: 1200px; /* permitir más ancho en desktop */
   margin: 0 auto 3rem auto;
 }
 
 .gallery-item {
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 3; /* relación más clásica para fotos */
+  min-height: 160px;
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
@@ -29,6 +31,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.2s ease;
 }
 
@@ -50,6 +53,30 @@
 
 .instagram-link {
   text-align: center;
+}
+
+/* Personalización del botón Instagram en la galería: usar variables globales */
+.instagram-link .instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--white);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--dark-red);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  background: transparent;
+}
+
+.instagram-link .instagram-btn:hover {
+  background: var(--primary-red); /* fondo en hover usando --primary-red */
+  border-color: var(--primary-red); /* cambiar borde a primary en hover */
+  transform: translateY(-2px);
+  color: var(--dark-gray);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
 }
 
 /* ========== Estilos del Modal de Pantalla Completa ========== */
