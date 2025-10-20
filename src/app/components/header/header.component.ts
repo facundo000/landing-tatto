@@ -36,7 +36,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   public readonly brandName = 'Nery Tattoo';
-  // public readonly brandLogo = 'assets/valkur_1.png';
   public readonly subscriptionPlaceholder = 'Tu email';
   public readonly subscriptionText = 'suscríbete a promociones:';
 
@@ -47,7 +46,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   public isMobile = false;
   public activeSection = 'home';
   public logoSrc = '../../../assets/images/valkur_1.webp';
-  private headerOffset = 180; // mantener el mismo offset usado para el scrollToSection
+  
+  // NUEVAS PROPIEDADES PARA CONTROL DE SCROLL
+  public isHeaderHidden = false;
+  private lastScrollTop = 0;
+  private scrollThreshold = 5; // Píxeles mínimos de scroll para activar
+  private headerShowThreshold = 100; // Mostrar header al llegar a menos de 100px del top
+  
+  private headerOffset = 180;
 
   // ========== REFERENCIAS PARA CLEANUP ==========
   private intersectionObserver?: IntersectionObserver;
@@ -61,7 +67,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeAnimations();
     this.setupSectionObserver();
     this.checkCurrentSection();
-    // Comprobación inicial por scroll como fallback si el IntersectionObserver no detecta correctamente
     setTimeout(() => this.updateActiveSectionFromScroll(), 300);
   }
 
@@ -152,8 +157,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // ========== RESPONSIVE HANDLING ==========
-
   // ========== NAVEGACIÓN Y SCROLL ==========
   public navigateToSection(event: MouseEvent, sectionId: string): void {
     event.preventDefault();
@@ -173,7 +176,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       const element = document.getElementById(sectionId);
       
       if (element) {
-  const headerOffset = this.headerOffset; // Altura del header fijo
+        const headerOffset = this.headerOffset;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -197,11 +200,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     history.pushState(null, '', url);
   }
 
-  /**
-   * Fallback: calcula la sección activa en base a la posición en el viewport.
-   * Se usa cuando el IntersectionObserver no actualiza correctamente (por ejemplo,
-   * si los elementos se renderizan tardíamente o cambian de tamaño).
-   */
   private updateActiveSectionFromScroll(): void {
     try {
       for (const item of this.navigationItems) {
@@ -211,9 +209,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         const top = rect.top;
         const bottom = rect.bottom;
 
-        // Si la parte superior de la sección está por encima del headerOffset
-        // y la parte inferior está por debajo del headerOffset, consideramos
-        // que la sección está activa.
         if (top <= this.headerOffset && bottom > this.headerOffset) {
           if (this.activeSection !== item.sectionId) {
             this.activeSection = item.sectionId;
@@ -223,8 +218,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
 
-      // Si no hay ninguna sección encontrada y estamos al tope de la página,
-      // forzamos 'home'.
       if ((window.pageYOffset || document.documentElement.scrollTop || 0) === 0) {
         if (this.activeSection !== 'home') {
           this.activeSection = 'home';
@@ -233,16 +226,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } catch (err) {
       // No bloquear si hay errores de acceso al DOM
-      // console.warn('updateActiveSectionFromScroll error', err);
     }
   }
 
   private checkCurrentSection(): void {
-    // Verificar si hay un hash en la URL al cargar
     const hash = window.location.hash.substring(1);
     if (hash) {
       this.activeSection = hash;
-      // Pequeño delay para asegurar que el DOM esté listo
       setTimeout(() => {
         this.scrollToSection(hash);
       }, 200);
@@ -269,10 +259,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setupSectionObserver(): void {
-    // Configurar intersection observer para detectar la sección visible
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -70% 0px', // Detectar cuando la sección está en el centro
+      rootMargin: '-20% 0px -70% 0px',
       threshold: 0.1
     };
 
@@ -281,7 +270,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id;
           if (sectionId && this.activeSection !== sectionId) {
-            // Diferir la asignación para evitar ExpressionChangedAfterItHasBeenCheckedError
             setTimeout(() => {
               this.activeSection = sectionId;
               this.updateUrl(sectionId === 'home' ? '' : sectionId);
@@ -291,7 +279,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }, observerOptions);
 
-    // Observar todas las secciones que existan
     this.navigationItems.forEach(item => {
       const element = document.getElementById(item.sectionId);
       if (element) {
@@ -299,12 +286,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    // También observar si existe una sección home específica
     const homeElement = document.getElementById('home');
     if (homeElement) {
       this.intersectionObserver.observe(homeElement);
     }
   }
+
   public getNavigationItems(): NavigationItem[] {
     return this.navigationItems;
   }
@@ -313,7 +300,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.emailSubscription.trim()) {
       console.log('Email suscrito:', this.emailSubscription);
       
-      // Animación de éxito
       gsap.to('.subscription-form', {
         scale: 1.05,
         duration: 0.2,
@@ -338,10 +324,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isNavigationActive = !this.isNavigationActive;
 
-    // Usamos setTimeout para asegurar que Angular actualice el DOM antes de que GSAP busque los elementos.
     setTimeout(() => {
       if (this.isNavigationActive) {
-        // Animación de entrada (ahora sí encontrará .nav-list.active)
         gsap.fromTo('.nav-list.active', 
           { 
             x: '-100%', 
@@ -355,7 +339,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
 
-        // Animación de los ítems del menú
         gsap.fromTo('.nav-list.active .nav-item', 
           { 
             x: -20, 
@@ -376,9 +359,39 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public closeNavigationOnMobile(): void {
     if (this.isMobile && this.isNavigationActive) {
-      
       this.isNavigationActive = false;
     }
+  }
+
+  // ========== NUEVA LÓGICA DE DETECCIÓN DE SCROLL ==========
+  private handleScrollDirection(): void {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Si estamos muy cerca del top, siempre mostrar el header
+    if (scrollTop < this.headerShowThreshold) {
+      this.isHeaderHidden = false;
+      this.lastScrollTop = scrollTop;
+      return;
+    }
+
+    // Calcular la diferencia de scroll
+    const scrollDifference = scrollTop - this.lastScrollTop;
+
+    // Solo actualizar si el scroll superó el threshold
+    if (Math.abs(scrollDifference) < this.scrollThreshold) {
+      return;
+    }
+
+    // Scroll hacia abajo - ocultar header
+    if (scrollDifference > 0 && scrollTop > this.headerShowThreshold) {
+      this.isHeaderHidden = true;
+    } 
+    // Scroll hacia arriba - mostrar header
+    else if (scrollDifference < 0) {
+      this.isHeaderHidden = false;
+    }
+
+    this.lastScrollTop = scrollTop;
   }
 
   // ========== HOST LISTENERS ==========
@@ -386,9 +399,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   public onWindowScroll(): void {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
     this.isScrolled = scrollTop > 50;
-    // Actualizar sección activa según scroll como fallback
+    
+    // Llamar a la nueva función de manejo de dirección de scroll
+    this.handleScrollDirection();
+    
     this.updateActiveSectionFromScroll();
-    // Cambiar el logo cuando el usuario empiece a scrollear
     this.logoSrc = this.isScrolled ? '../../../assets/images/valkur_2.webp' : '../../../assets/images/valkur_1.webp';
   }
 
@@ -397,7 +412,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     const wasMobile = this.isMobile;
     this.checkScreenSize();
     
-    // Si cambió de móvil a desktop, cerrar el menú móvil
     if (wasMobile && !this.isMobile) {
       this.isNavigationActive = false;
     }
@@ -413,7 +427,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     const navigation = document.querySelector('.navigation') as HTMLElement;
     const navToggle = document.querySelector('.nav-toggle') as HTMLElement;
     
-    // Cerrar si se hace clic fuera del menú y del toggle
     if (navigation && navToggle && 
         !navigation.contains(target) && 
         !navToggle.contains(target)) {
@@ -434,7 +447,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   public onKeyDown(event: KeyboardEvent): void {
-    // Cerrar menú con Escape
     if (event.key === 'Escape' && this.isMobile && this.isNavigationActive) {
       this.isNavigationActive = false;
     }
@@ -442,10 +454,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ========== CLEANUP ==========
   private cleanup(): void {
-    // Limpiar ScrollTriggers
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-    // Limpiar IntersectionObserver
     if (this.intersectionObserver) {
       this.intersectionObserver.disconnect();
     }
