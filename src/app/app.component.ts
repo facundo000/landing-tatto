@@ -29,7 +29,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements AfterViewInit {
-  title = 'landing_tatto';
 
   constructor(private elementRef: ElementRef) {}
 

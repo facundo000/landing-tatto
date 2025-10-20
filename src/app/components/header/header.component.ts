@@ -46,6 +46,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   public isNavigationActive = false;
   public isMobile = false;
   public activeSection = 'home';
+  public logoSrc = '../../../assets/images/valkur_1.webp';
   private headerOffset = 180; // mantener el mismo offset usado para el scrollToSection
 
   // ========== REFERENCIAS PARA CLEANUP ==========
@@ -387,6 +388,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isScrolled = scrollTop > 50;
     // Actualizar sección activa según scroll como fallback
     this.updateActiveSectionFromScroll();
+    // Cambiar el logo cuando el usuario empiece a scrollear
+    this.logoSrc = this.isScrolled ? '../../../assets/images/valkur_2.webp' : '../../../assets/images/valkur_1.webp';
   }
 
   @HostListener('window:resize', [])
