@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy  } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 interface TattooImage {
   id: number;
@@ -17,24 +16,24 @@ interface TattooImage {
 export class GalleryComponent implements OnInit, OnDestroy { 
   
   images: TattooImage[] = [
-    { id: 1, src: '', alt: 'Placeholder 1' },
+    { id: 1, src: 'assets/images/tatto-brazo.webp', alt: 'Tatuaje en blanco y negro del Tío Gilito (Rico McPato) en el hombro, con sombrero, un puro, dados y un gran símbolo de anarquía.' },
     { 
       id: 2, 
-      src: 'https://images.unsplash.com/photo-1590246814883-57c511aa4f68?w=500&h=500&fit=crop', 
-      alt: 'Tatuaje japonés - Proceso' 
+      src: 'assets/images/tatto-gemelo.webp', 
+      alt: 'Tatuaje en el gemelo (pantorrilla) de un casco espartano, centrado en una banda o brazalete con patrones geométricos.' 
     },
     { 
       id: 3, 
-      src: 'https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=500&h=500&fit=crop', 
-      alt: 'Tatuaje japonés - Espalda completa' 
+      src: 'assets/images/tatto-antebrazo-2.webp', 
+      alt: 'Tatuaje del Ojo de la Providencia dentro de un triángulo, con un fondo rojo estilo acuarela y detalles de hojas en negro.' 
     },
     { 
       id: 4, 
-      src: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&h=500&fit=crop', 
-      alt: 'Tatuaje japonés - Brazo minimalista' 
+      src: 'assets/images/tatto-cruz.webp', 
+      alt: 'Tatuaje minimalista estilizada como una cruz, en tinta negra sólida en el antebrazo.' 
     },
-    { id: 5, src: '', alt: 'Placeholder 2' },
-    { id: 6, src: '', alt: 'Placeholder 3' }
+    { id: 5, src: 'assets/images/tatto-mariposa.webp', alt: 'Tatuaje en el omóplato que combina una mariposa en blanco y negro con dos rosas a color rojo y pétalos sueltos.' },
+    { id: 6, src: 'assets/images/tatto-antebrazo.webp', alt: 'Tatuaje de estilo japonés en proceso, mostrando las escamas de un pez koi y el delineado de nubes tradicionales.' }
   ];
 
   isFullscreenOpen = false;
