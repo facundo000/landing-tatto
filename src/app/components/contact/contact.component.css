@@ -50,7 +50,7 @@
   gap: 1.5rem;
 }
 
-.info-item h3 {
+.info-item h2 {
   color: var(--primary-red);
   font-size: var(--font-size-pr);
   margin-bottom: 0.5rem;
